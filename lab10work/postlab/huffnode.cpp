@@ -1,0 +1,86 @@
+#include "huffnode.h"
+#include <iostream>
+#include <string>
+
+huffnode::huffnode(){
+  //serves as head node
+  character = 0;
+  frequency = 0;
+  left = NULL;
+  right = NULL; 
+}
+
+huffnode::huffnode(char c, int f){
+  //serves as a node with character
+  character = c;
+  frequency = f;
+}
+
+huffnode::~huffnode(){
+}
+
+bool huffnode::insert(char c, int f){
+  
+  if(this->left == NULL){
+    huffnode *newnode = new huffnode;
+    newnode->character = c;
+    newnode->frequency = f;
+    this->left = newnode;
+    this->frequency = this->frequency + f;
+    return true;
+  }
+  if(this->right== NULL){
+    huffnode *newnode = new huffnode;
+    newnode->character = c;
+    newnode->frequency = f;
+    this->right = newnode;
+    this->frequency = this->frequency + f;
+    return true;
+  }
+  return false;
+}
+
+bool huffnode::insert(huffnode *node){
+  huffnode *newnode = new huffnode;
+  newnode->character = node->character;
+  newnode->frequency = node->frequency;
+  newnode->left = node->left;
+  newnode->right = node->right;
+
+  if(this->left == NULL){
+    this->left = newnode;
+    this->frequency = this->frequency + newnode->frequency;
+    return true;
+  }
+  if(this->right == NULL){
+    this->right = newnode;
+    this->frequency = this->frequency + newnode->frequency;
+    return true;
+  }
+  return false;
+  
+}
+
+char huffnode::getChar(){
+  return this->character;
+}
+
+int huffnode::getFreq(){
+  return this->frequency;
+}
+
+void huffnode::changeFreq(int change){
+  this->frequency = change;
+}
+
+bool huffnode::isLess(huffnode *other){
+  int o = other->frequency;
+  int c = this->frequency;
+
+  if(c < o){
+    return true;
+  }
+  else{
+    return false;
+  }
+}

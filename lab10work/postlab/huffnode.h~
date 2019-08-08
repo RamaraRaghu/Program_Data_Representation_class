@@ -1,0 +1,28 @@
+#ifndef HUFFNODE_H
+#define HUFFNODE_H
+#include <string>
+
+using namespace std;
+
+class huffnode {
+ public:
+  huffnode();
+  huffnode(char c, int f);
+  ~huffnode();
+  bool insert(char c, int f);
+  bool insert(huffnode *node);
+  void changeFreq(int change);
+  int getFreq();
+  char getChar();
+  bool isLess(huffnode *other);
+
+
+ private:
+  friend class heap;
+  char character;
+  int frequency;
+  huffnode *left;
+  huffnode *right;
+  char mincharacter;
+};
+#endif
