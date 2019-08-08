@@ -1,0 +1,69 @@
+C016 000	jmp	start	skips the variable creation
+0000 001	dw	0	int temp set at 0
+0000 002	dw	0	int b set at 0
+0000 003	dw	0	int i set at 0
+0004 004	dw	4	int j set at size of array - 1
+0000 005	dw	0	a[] start
+0001 006	dw	1	a[1] = 1
+0007 007	dw	7	a[2] = 7
+0002 008	dw	2	a[3] = 2
+0009 009	dw	9	a[4] = 9
+0006 00A	dw	6	a[5] = 6
+0005 00B	dw	5	the max
+0000 00C	dw	0	at: current value
+0000 00D	dw	0	previous
+0001 00E	dw	1	one
+0000 00F	dw	0	zero
+3000 010	dw	3000	loader for getting a[i]
+4000 011	dw	4000	storer for setting a[i] = a[j-1]
+0000 012
+0000 013
+0000 014
+0000 015			extra space
+300B 016	load	max	loads max for the for loop
+6003 017	sub	i	max - i
+D041 018	jmpe	xit	when i = max, jmp to end
+3009 019	load	j	loading j for the nested for loop
+6003 01A	sub	i	j - i
+D03D 01B	jmpe	xit	if j - i = 0, jump to iterate i
+3010 01C	load	ldir	getting loader for a[j]
+5005 01D	a		adds a[]
+5004 01E	j		adds a[j]
+4020 01F			storing in next line
+0000 020	dw		stores the current value (next line puts in in at)
+400C 021	store		storing in at
+600E 022	sub	one	this gets a[j-1]
+4024 023	store		stores a[j-1] at line 24
+0000 024	dw		a[j-1]
+400D 025	store		stores a[j-1] in previous
+300D 026	load	prev	loads previous = a[j-1] for if statement
+600C 027	sub	at	prev - at
+D039 028
+E039 029			if prev - at <= at, then jmp to iterate j
+300C 02A	load	cur	loads current index
+4001 02B	store	temp	stores a[i] as temp
+3011 02C	load		getting storer for setting a[i] = a[j-1]
+5005 02D	add		getting a[]
+5004 02E	add		a[j] gotten
+4031 02F	store		store this in line 31
+300D 030	load		getting prev
+0000 031	dw		storing a[j] as prev here
+3011 032	store		loading storer
+5005 033	add	a[]	loads a[]
+5004 034	add	j	a[j] gotten
+600E 035	sub	one	a[j-1] gotten
+4038 036	store		stores at line 38
+3001 037	load		gets temp(which will instead get stored as a[j-1]
+0000 038	dw		a[j-1] = temp
+3004 039	load	j	decrementing j
+600E 03A	sub	one	j-1
+4004 03B	store		store j-1 as j
+C019 03C	jmp		go back to for loop
+3003 03D	load	i	getting i
+500E 03E	add	one	i + 1
+4003 03F	store		i = i +1
+C016 040	jmp		loop back to first for loop
+0000 041	halt		halt
+
+
+

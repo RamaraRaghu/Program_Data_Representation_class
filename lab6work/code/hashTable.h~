@@ -1,0 +1,31 @@
+//Rakshith Raghu, rr5de
+
+#ifndef HASHTABLE_H
+#define HASHTABLE_H
+
+#include <string>
+#include <algorithm>
+//#include "ListNode.h"   these are for the optimization section
+//#include "List.h"
+#include <vector>
+using namespace std;
+
+
+class hashTable {
+ private:
+  vector<string> dictionary;
+  int size;
+ public:
+  hashTable(int dic_size);
+  int insert(string word);
+  string find(int key);
+  string remove(int key);
+  //void rehash;   for the optimization section
+  //bool checkprime(int p);
+  //int  getNextPrime(int p);
+  int  getTableSize();
+  bool inDictionary(char*  word);
+
+  
+};
+#endif

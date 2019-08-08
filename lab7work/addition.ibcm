@@ -1,0 +1,31 @@
+C009 000	jmp	start	skip around the vars(as you did)
+0000 001	dw	0	int a
+0000 002	dw	0	int b
+0000 003	dw	0	int c
+0000 004	dw	0	int sum
+0000 005			
+0000 006
+0000 007
+0000 008			extra space if necessary
+1000 009	readH	n	start and reads in n
+4001 00A	store	a	stores n as a
+1000 00B	readH	n	reads in the next int
+4002 00C	store	b	stores n as b
+1000 00D	readH   n	reads in the last int
+4003 00E	store	c	stores n as c
+3001 00F	load	a	loads the a address
+5002 010	add	b	adds a and b together
+4004 011	store	a	stores into sum
+3003 012 	load	c	gets c
+5004 013	add	a	add sum and c together
+4004 014	store	a	stores into sum
+3004 015	load	a	getting sum for if statement
+D018 016	jmp		asks if sum  == 0, then jump to 18
+C009 017	jmp		if not, jump back to line 1
+3001 018	load	a	loads a to be printed
+1800 019	printH		prints a
+3002 01A	load	b	loads b to be printed
+1800 01B	printH		prints b
+3003 01C	load	c	loads c to be printed
+1800 01D	printH		prints c
+0000 01E	halt		this ends the code

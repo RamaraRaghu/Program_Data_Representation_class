@@ -1,0 +1,19 @@
+#ifndef LIST_H
+#define LIST_H
+
+#include <string>
+#include "listNode.h";
+using namespace std;
+
+class List {
+ public:
+  List();
+  ~List();
+  void insert(string newer);
+  ListNode* getFirst();
+  ListNode* getNext(ListNode* current);
+  bool atEnd(ListNode* current);
+ private:
+  ListNode* head;
+};
+#endif

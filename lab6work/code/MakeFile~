@@ -1,0 +1,4 @@
+CXX= clang $(CXXFLAGS)
+DEBUG= -Wall -g
+
+wordPuzzle: wordPuzzle.o timer.o hashTable.o

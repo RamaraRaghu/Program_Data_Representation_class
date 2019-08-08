@@ -1,0 +1,20 @@
+CXX= clang++
+CXXFLAGS = -Wall -g
+
+OFILES =  timer.o hashTable.o wordPuzzle.o
+
+.SUFFIXES: .o .cpp
+
+main: $(OFILES)
+	$(CXX) $(OFILES)
+
+clean:
+	/bin/rm -f *o. *~
+
+timer.o: timer.h timer.cpp
+	$(CXX) -lrt -c timer.cpp
+
+hashTable.o: hashTable.cpp hashTable.h
+	$(CXX) -c hashTable.cpp
+
+wordPuzzle.o:  wordPuzzle.cpp hashTable.cpp timer.cpp hashTable.h timer.h

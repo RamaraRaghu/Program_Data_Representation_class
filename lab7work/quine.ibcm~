@@ -1,0 +1,22 @@
+C006 000		jmp	jmps to start	
+0014 001	dw	size	size = 16 + 4 = 20
+0000 002	dw	temp	temp = 0
+0000 003	dw	zero	int zero
+0001 004	dw	one	int one
+0000 005	dw		int count = 0
+3000 006	load		loader
+4002 007	store		store into temp
+4009 008	store		store into next line
+0000 009	dw	doit
+1800 00A	printH
+3005 00B			loading count
+5004 00C	add		iterating count
+4005 00D	store		storing back count
+6001 00E	sub		count - size, if equal to zero then jmp
+D013 00F	jmpe
+3002 010	load		loading temp back up, add to get to next index
+5004 011	add		moves it to next index,
+C007 012	jmp		back to store temp
+3005 013	load		loads count to be printed
+1800 014	printH
+

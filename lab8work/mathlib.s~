@@ -1,0 +1,39 @@
+
+
+	global product
+	global power
+
+	section	.text
+
+
+product:
+	xor	eax, eax		;zero out return value
+	xor	ebx, ebx		;zero out i
+
+				;edi is assumed to contain x
+				;esi is assumed to contain y
+loop:
+	cmp	ebx,esi		;does i = y
+	je	stop		;if so, the loop is finished
+	add	eax,esi		;add x to return value
+	inc	ebx		;increments i
+	jmp	loop		;loops back to beginning of for loop
+	
+stop:
+	ret			;returned value is in eax
+
+
+power:
+	xor	eax,eax		;setting return to 0
+	
+base_case:
+	cmp	esi,1		;compare y to 1
+	jg	recursion	;if y > 1, then do recursion
+	mov	eax,edi		;at base case, set return  = y
+	ret
+recursion:
+	dec	esi		;decrease y
+	call	base_case	;run base case
+	imul	eax,edi		;do return * x
+	ret
+	

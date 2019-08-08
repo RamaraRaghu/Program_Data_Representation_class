@@ -1,0 +1,19 @@
+#include "ListNode.h"
+using namespace std;
+
+ListNode::ListNode(){
+  this->value = "?";
+  this->next = NULL;
+}
+
+void ListNode::addNode(string word){
+  if(this->next == NULL){
+    ListNode* input = new ListNode;
+    input->value = word;
+
+    this->next = input;
+  }
+  else{
+    this->next->addNode(word);
+  }
+}

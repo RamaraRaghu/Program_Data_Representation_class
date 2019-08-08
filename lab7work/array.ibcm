@@ -1,0 +1,38 @@
+C010	000	jmp	start	skips around the variables
+0002	001 	dw	0	int a[]
+0002	002 	dw	0	b
+0003	003 	dw	1	c
+0004	004 	dw	2	d
+0000	005 	dw	3	temp
+0000	006 	dw	0	(s) = max number
+0000	007 	dw	0	i
+0000	008 	dw	0	zero
+0004	009 	dw	4	size n = 3	
+3000	00A     dw	3000	for loading a[i]
+0001	00B     dw	1	one
+0000	00C			space for changes
+0000	00D			creating space
+0000	00E		
+0000	00F		
+3009	010	load	n	doing if(i >= n) exit
+6007	011	sub	i
+E022	012	xit		if n - i < 0, jump to exit
+D022	013	xit		if n -i == 0, jump to exit
+300A	014	load	adit	forming instruction to look at a[i]
+5001    015	add	a
+5007	016	add	i
+4018	017	store	doit	plant instruction
+0000	018	dw	0
+4005	019	store	temp	stores a[i] = temp
+6006	01A	sub	s	a[i] - s
+E01E	01B	jmpl		if this is less than 0, jump
+3005	01C	load		loads the temp
+4006	01D	store		stores max = temp
+3007	01E	load	i	loads i for i++
+500B	01F	add	one	i+1
+4007	020	store	i	stores i = i+1
+C010	021	jmp		jmps back to beginning of for loop
+3006	022	load    s	loads max value
+1800 	023	printH		prints max value
+0000	024
+0000	025
