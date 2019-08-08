@@ -1,0 +1,14 @@
+CXX = clang++
+DOX = doxygen
+
+OFILES = topological.o middleearth.o
+
+main:	$(OFILES)
+	$(CXX) $(OFILES)
+	$(DOX)
+
+middleearth.o: middleearth.h middleearth.cpp
+	$(CXX) -c middleearth.cpp
+
+
+topological.o: traveling.cpp middleearth.cpp middleearth.h
