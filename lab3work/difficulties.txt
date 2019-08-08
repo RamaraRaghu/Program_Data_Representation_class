@@ -1,0 +1,4 @@
+Rakshith Raghu rr5de 9/19/2018 difficulties.txt
+
+   Didn't really have any issues getting the code to work. The input for the inlab was messing up till I added a boolean flag to only add a char to the stack if it was an integer. If it was an operation, the flag was fired and it would not add that element to the stack. For the postlab, I took the lab2 code and modified it by changing names and deleting a bunch of methods. The only error was forgetting to add a "friend class" for the listnode class so that I had access to the values and the previous/next pointers.
+

@@ -1,0 +1,3 @@
+Rakshith Raghu, rr5de, 9/16/2018, unix.questions.txt
+
+How do you get to the folder that contains the deleted files?

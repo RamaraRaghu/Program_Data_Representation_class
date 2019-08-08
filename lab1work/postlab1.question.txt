@@ -1,0 +1,4 @@
+Rakshith Raghu, rr5de, postlab1.question.txt, 9/62018
+
+In the syntax, to run an operation on a object, it uses "->". For
+example: "l->display();". Why is the "->" used instead of "."

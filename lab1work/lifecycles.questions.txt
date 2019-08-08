@@ -1,0 +1,4 @@
+Rakshith Raghu, rr5de, lifecycles.questions.txt, 9/4/2018
+
+1. I tried moving the prototype functions into the h file and the cpp file. This
+led to the test file being unable to identify the fucnctions at the moments it was supposed to use them. Why do the prototype functions exist outside the h file?

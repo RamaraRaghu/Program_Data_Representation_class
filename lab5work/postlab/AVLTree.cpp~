@@ -1,0 +1,272 @@
+#include "AVLTree.h"
+#include <string>
+#include <iostream>
+#include "AVLNode.h"
+using namespace std;
+
+AVLTree::AVLTree() {
+  this->root = NULL;
+  num_nodes = 0;
+}
+
+AVLTree::~AVLTree() {
+  delete root;
+  root = NULL;
+  num_nodes = 0;
+}
+
+// insert finds a position for x in the tree and places it there, rebalancing
+// as necessary.
+void AVLTree::insert(const string& x) {
+  // YOUR IMPLEMENTATION GOES HERE
+  insert(x, this->root);
+}
+
+void AVLTree::insert(const string& x, AVLNode*& n){
+  if(n == NULL){
+    n = new AVLNode;
+    n->value = x;
+    num_nodes = num_nodes + 1;
+  }
+  else if(x > n->value){
+    insert(x, n->right);
+    balance(n);
+  }
+  else if(x < n->value){
+    insert(x, n->left);
+    balance(n);
+  }
+  else{
+    //does nothing
+  }
+  n->height = 1 + max(height(n->left), height(n->right));
+}
+
+// remove finds x's position in the tree and removes it, rebalancing as
+// necessary.
+void AVLTree::remove(const string& x) { root = remove(root, x); }
+
+// pathTo finds x in the tree and returns a string representing the path it
+// took to get there.
+string AVLTree::pathTo(const string& x) {
+  // YOUR IMPLEMENTATION GOES HERE
+  AVLNode * helper = this->root;
+  bool flag = find(x);
+
+  if(flag == false){
+    return "";
+  }
+  else{
+    return path(x, helper);
+  }
+}
+
+string AVLTree::path(const string& x, AVLNode*& n){
+  if(n->value == x){
+    return n->value;
+  }
+  else if(n->value > x){
+    return n->value + " " + path(x, n->left);
+  }
+  else if(n->value < x){
+    return n->value + " " + path(x, n->right);
+  }
+  else{
+    return "";
+  }
+  return "";
+}
+
+// find determines whether or not x exists in the tree.
+bool AVLTree::find(const string& x){
+  // YOUR IMPLEMENTATION GOES HERE
+  return find(x, this->root);
+}
+
+bool AVLTree::find(const string& x, AVLNode*  n){
+  if(n == NULL){
+    return false;
+  }
+  if(x < n->value){
+    return find(x, n->left);
+  }
+  if(x > n->value){
+    return find(x, n->right);
+  }
+  if(x == n->value){
+    return true;
+  }
+  else{
+  }
+
+  //if it somehow does  make it through the if else statement without returning
+  return false;
+}
+
+// numNodes returns the total number of nodes in the tree.
+int AVLTree::numNodes() const {
+  // YOUR IMPLEMENTATION GOES HERE
+  return num_nodes;
+}
+
+// balance makes sure that the subtree with root n maintains the AVL tree
+// property, namely that the balance factor of n is either -1, 0, or 1.
+void AVLTree::balance(AVLNode*& n) {
+  // YOUR IMPLEMENTATION GOES HERE
+  int balancer = height(n->left) - height(n->right);
+
+  while(balancer >= 2 || balancer <= -2){
+    if(height(n->left) > height(n->right)){
+      placeholder = rotateRight(n);
+    }
+    else if(height(n->right) > height(n->left)){
+      n = rotateLeft(n);
+    }
+    else{
+    }
+    balancer = height(n->left) - height(n->right);
+  }
+  
+}
+
+// rotateLeft performs a single rotation on node n with its right child.
+AVLNode* AVLTree::rotateLeft(AVLNode*& n) {
+  //first element gets the n stored as the right child
+  AVLNode *  helper = n->right;
+  n->right = helper->left;
+  helper->left = n;
+  
+  n->height = 1 + max(height(n->left), height(n->right));
+  helper->height = 1 + max(height(helper->right), height(helper->left));
+
+  //final element moves n->right to the root
+  n = helper;
+  return n;
+  
+}
+
+// rotateRight performs a single rotation on node n with its left child.
+AVLNode* AVLTree::rotateRight(AVLNode*& n) {
+  //first element gets n stored as the left  child
+  AVLNode *  helper = n->left;
+  helper->left = n->right;
+  n->right = helper;
+
+  n->height = 1 + max(height(n->left), height(n->right));
+  helper->height = 1 + max(height(helper->left), height(helper->right));
+
+  helper = n;
+  return helper;
+}
+
+// private helper for remove to allow recursion over different nodes. returns
+// an AVLNode* that is assigned to the original node.
+AVLNode* AVLTree::remove(AVLNode*& n, const string& x) {
+  if (n == NULL) {
+    return NULL;
+  }
+  // first look for x
+  if (x == n->value) {
+    // found
+    // no children
+    if (n->left == NULL && n->right == NULL) {
+      delete n;
+      num_nodes = num_nodes - 1;
+      n = NULL;
+      return NULL;
+    }
+    // single child
+    if (n->left == NULL) {
+      AVLNode* temp = n->right;
+      n->right = NULL;
+      delete n;
+      num_nodes = num_nodes - 1;
+      n = NULL;
+      return temp;
+    }
+    if (n->right == NULL) {
+      AVLNode* temp = n->left;
+      n->left = NULL;
+      delete n;
+      num_nodes = num_nodes - 1;
+      n = NULL;
+      return temp;
+    }
+    // two children -- tree may become unbalanced after deleting n
+    string sr = min(n->right);
+    n->value = sr;
+    n->right = remove(n->right, sr);
+  } else if (x < n->value) {
+    n->left = remove(n->left, x);
+  } else {
+    n->right = remove(n->right, x);
+  }
+  //using the next line to do heights
+  n->height = 1 + max(height(n->left), height(n->right));
+  balance(n);
+  return n;
+}
+
+// min finds the string with the smallest value in a subtree.
+string AVLTree::min(AVLNode* node) const {
+  // go to bottom-left node
+  if (node->left == NULL) {
+    return node->value;
+  }
+  return min(node->left);
+}
+
+// height returns the value of the height field in a node. If the node is
+// null, it returns -1.
+int AVLTree::height(AVLNode* node) const {
+  if (node == NULL) {
+    return -1;
+  }
+  return node->height;
+}
+
+// max returns the greater of two integers.
+int max(int a, int b) {
+  if (a > b) {
+    return a;
+  }
+  return b;
+}
+
+// Helper function to print branches of the binary tree
+void showTrunks(Trunk* p) {
+  if (p == NULL) return;
+  showTrunks(p->prev);
+  cout << p->str;
+}
+
+// Recursive function to print binary tree
+// It uses inorder traversal
+void AVLTree::printTree(AVLNode* root, Trunk* prev, bool isLeft) {
+  if (root == NULL) return;
+
+  string prev_str = "    ";
+  Trunk* trunk = new Trunk(prev, prev_str);
+
+  printTree(root->left, trunk, true);
+
+  if (!prev)
+    trunk->str = "---";
+  else if (isLeft) {
+    trunk->str = ".---";
+    prev_str = "   |";
+  } else {
+    trunk->str = "`---";
+    prev->str = prev_str;
+  }
+
+  showTrunks(trunk);
+  cout << root->value << endl;
+
+  if (prev) prev->str = prev_str;
+  trunk->str = "   |";
+
+  printTree(root->right, trunk, false);
+}
+
+void AVLTree::printTree() { printTree(root, NULL, false); }

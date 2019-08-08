@@ -1,0 +1,108 @@
+//Rakshith Raghu, rr5de, 9/13/2018, List.cpp, forward and backward are opposite
+#include "stack.h"
+using namespace std;
+
+stack::stack(){
+
+  this->head = new ListNode;
+  this->tail = new ListNode;
+
+  //tail and head connection set up here
+  this->tail->previous = this->head;
+  this->head->next = this->tail;
+  this->count = 0;
+}
+
+///given functions
+
+//start of INSERTION NODES
+/////////////////////////////////////////////////////////////////////////////
+void stack::push(int x){
+  ListNode *newnode = new ListNode;
+  
+  newnode->value = x;
+
+  
+  if(this->count == 0){
+    this->head->next = newnode;
+    this->tail->previous = newnode;
+
+    newnode->next = this->tail;
+    newnode->previous = this->head;
+  }
+  else{
+    newnode->next = this->tail;
+    newnode->previous = this->tail->previous;
+    this->tail->previous->next = newnode;
+    this->tail->previous = newnode;
+  }
+
+  this->count = this->count + 1;
+}
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+/////////////////////////////////////////////
+
+int stack::top(){
+  return this->tail->previous->value;
+}
+
+
+
+bool stack::empty() const{
+  if(this->count == 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+int stack::size() const{
+  return this->count;
+}
+
+//remove functions here
+void stack::pop(){
+  ListNode *placeholder = this->tail->previous;
+
+  if(this->count > 1){
+    this->tail->previous = placeholder->previous;
+    placeholder->previous->next = this->tail;
+    delete placeholder;
+    this->count = this->count -1;
+  }
+  else{
+    this->head->next = this->tail;
+    this->tail->previous = this->head;
+    delete placeholder;
+    this->count = 0;
+  }
+}
+
+//still to be implemented
+stack::~stack(){
+  //done to delete a list
+  //this->makeEmpty();
+  //delete this->head;
+  //delete this->tail;
+  // delete this->count;
+  //i believe the line below is the only necessary element, but just being safe
+  // delete this;
+}
+
+void stack::makeEmpty(){
+  //remove elements starting at beginning then moving towards end
+  ListItr helper(this->tail->previous);
+  int todie = helper.retrieve();
+  
+  while(!helper.isPastEnd()){
+    todie = helper.retrieve();
+    helper.moveBackward();
+    this->remove(todie);
+  }
+}
+
+
+
+

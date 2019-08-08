@@ -1,0 +1,209 @@
+//Rakshith Raghu, rr5de, 9/13/2018, List.cpp, forward and backward are opposite
+#include "List.h"
+using namespace std;
+
+List::List(){
+
+  this->head = new ListNode;
+  this->tail = new ListNode;
+
+  //tail and head connection set up here
+  this->tail->previous = this->head;
+  this->head->next = this->tail;
+  this->count = 0;
+}
+
+///given functions
+List::List(const List& source){
+  head = new ListNode;
+  tail = new ListNode;
+  head->next = tail;
+  tail->previous = head;
+  count = 0;
+  ListItr iter(source.head->next);
+  while(!iter.isPastBeginning()){
+    insertAtTail(iter.retrieve());
+    iter.moveForward();
+  }
+  
+}
+
+List& List::operator=(const List& source){
+  if(this == &source)
+    return *this;
+  else{
+    this->makeEmpty();
+    ListItr iter(source.head->next);
+    while(!iter.isPastBeginning()){
+      insertAtTail(iter.retrieve());
+      iter.moveForward();
+    }
+  }
+  return *this;
+}
+
+//start of INSERTION NODES
+/////////////////////////////////////////////////////////////////////////////
+void List::insertAtTail(int x){
+  ListNode *newnode = new ListNode;
+  
+  newnode->value = x;
+
+  
+  if(this->count == 0){
+    this->head->next = newnode;
+    this->tail->previous = newnode;
+
+    newnode->next = this->tail;
+    newnode->previous = this->head;
+  }
+  else{
+    newnode->next = this->tail;
+    newnode->previous = this->tail->previous;
+    this->tail->previous->next = newnode;
+    this->tail->previous = newnode;
+  }
+
+  this->count = this->count + 1;
+}
+
+void List::insertAfter(int x, ListItr position){
+  ListNode *newnode = new ListNode;
+  newnode->value = x;
+
+  //set the previous for the node after this node to this node
+  position.current->previous->next = newnode;
+
+  //sets the pointer for the inserted node
+  newnode->next = position.current;
+  newnode->previous = position.current->previous;
+
+  //sets the pointer for the previous node
+  position.current->previous = newnode;
+
+  this->count = this->count + 1;
+}
+
+void List::insertBefore(int x, ListItr position){
+  ListNode *newnode = new ListNode;
+  newnode->value = x;
+
+  //sets the previous for the node before this node to this node
+  position.current->next->previous = newnode;
+
+  //sets the pointers for the inserted node
+  newnode->next = position.current->next;
+  newnode->previous = position.current;
+
+  //sets the pointer for the iterator
+  position.current->next = newnode;
+
+  this->count = this->count + 1;
+}
+
+
+//////////////////////////////////////////////////////////////
+//////////////////////////////////////////////////////////////
+/////////////////////////////////////////////
+
+
+
+
+bool List::isEmpty() const{
+  if(this->count == 0){
+    return true;
+  }
+  else{
+    return false;
+  }
+}
+
+int List::size() const{
+  return this->count;
+}
+
+ListItr List::first(){
+  ListItr pointer = ListItr(this->tail->previous);
+  return pointer;
+}
+
+ListItr List::last(){
+  ListItr pointer = ListItr(this->head->next);
+  return pointer;
+}
+
+
+ListItr List::find(int x){
+  bool foundflag = false;
+  ListItr search = this->first();
+  while(foundflag  == false && search.isPastEnd() == false){
+    if(search.current->value == x){
+      foundflag = true;
+    }
+    else{
+      search.moveBackward();
+    }
+  }
+
+  if(search.isPastEnd() == true){
+    ListItr back = ListItr(search.current->previous);
+    return back;
+  }
+  else{
+    return search;
+  }
+}
+
+
+//remove functions here
+void List::remove(int x){
+  ListItr remover = this->find(x);
+
+  if(this->count > 1){
+    if(remover.current){
+      //this runs if the pointer is not null
+      remover.current->next->previous = remover.current->previous;
+      remover.current->previous->next = remover.current->next; 
+
+      delete remover.current;
+      this->count = this->count - 1;
+    }
+    else{
+      //this runs if the pointer is null
+    }
+  }
+  else{
+    if(remover.current){
+      this->head->next = this->tail;
+      this->tail->previous = this->head;
+      delete remover.current;
+    }
+  }
+}
+
+//still to be implemented
+List::~List(){
+  //done to delete a list
+  //this->makeEmpty();
+  //delete this->head;
+  //delete this->tail;
+  // delete this->count;
+  //i believe the line below is the only necessary element, but just being safe
+  // delete this;
+}
+
+void List::makeEmpty(){
+  //remove elements starting at beginning then moving towards end
+  ListItr helper(this->tail->previous);
+  int todie = helper.retrieve();
+  
+  while(!helper.isPastEnd()){
+    todie = helper.retrieve();
+    helper.moveBackward();
+    this->remove(todie);
+  }
+}
+
+
+
+

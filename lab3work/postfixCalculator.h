@@ -1,0 +1,37 @@
+//Rakshith Raghu, rr5de, 9/15/2018, postfixCalculator.h
+#ifndef POSTFIXCALCULATOR_H
+#define POSTFIXCALCULATOR_H
+#include "stack.h"
+#include <iostream>
+using namespace std;
+
+class postfixCalculator {
+public:
+  //operation functions
+  void add();
+  void subtract();
+  void multiply();
+  void divide();
+  void negate();
+
+  //object declaration
+  postfixCalculator();
+  ~postfixCalculator();
+
+  //stack operations
+  void pushNum(int e); //places a new element onto the top of the stack
+  int topNum();  //return top element
+  void popNum(); //removes element at top of stack but isnt returned
+  bool emptyNum();  //checks if there are any elements on the stack
+  
+
+    
+    
+
+private:
+  stack *numbers;
+  
+  
+};
+
+#endif

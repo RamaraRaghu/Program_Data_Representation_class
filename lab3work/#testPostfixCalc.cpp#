@@ -1,0 +1,16 @@
+#include <iostream>
+#include <string>
+#include <cstdlib>
+#include "postfixCalculator.h"
+using namespace std;
+
+int main () {
+  postfixCalculator p;
+  //working with only valid strings for the calculator
+  string expression;
+  
+
+  //result here
+  cout << "Result is: " << p.topNum() << endl;
+  return 0;
+}
